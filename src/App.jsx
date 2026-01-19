@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -18,13 +20,33 @@ const initialFriends = [
     balance: 0,
   },
 ];
+
+function Button({ children, onClick }) {
+  return (
+    <>
+      <button
+        onClick={() => {
+          onClick();
+        }}
+        className="button"
+      >
+        {children}
+      </button>
+    </>
+  );
+}
 export default function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function handleShowAddFriend() {
+    setShowAddFriend((show) => !show);
+  }
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList />
-        <FormList />
-        <Button>Add friend</Button>
+        {showAddFriend && <FormList />}
+        <Button onClick={handleShowAddFriend}>Add friend</Button>
       </div>
       <FormSplitBill />
     </div>
@@ -64,13 +86,7 @@ function Friend({ friend }) {
     </>
   );
 }
-function Button({ children }) {
-  return (
-    <>
-      <button className="button">{children}</button>
-    </>
-  );
-}
+
 function FormList() {
   return (
     <>
@@ -87,23 +103,21 @@ function FormList() {
 
 function FormSplitBill() {
   return (
-    
-      <form action="" dir="ltr" className="form-split-bill">
-        <h2>Split a bill with X</h2>
-        <label htmlFor="billValue">💸Bill value</label>
-        <input type="text" id="billValue" />
-        <label htmlFor="yourExpense">Your expense</label>
-        <input type="text" id="yourExpense" />
-        <label htmlFor="friendExpense">X's expense</label>
-        <input disabled type="text" id="friendExpense" />
-        <label htmlFor="howBay">How is paying the bill</label>
-        <select >
-          <option value="user">Me</option>
-          <option value="friend">friend name</option>
-        </select>
-     
-        <Button>Split bill</Button>
-      </form>
-    
+    <form action="" dir="ltr" className="form-split-bill">
+      <h2>Split a bill with X</h2>
+      <label htmlFor="billValue">💸Bill value</label>
+      <input type="text" id="billValue" />
+      <label htmlFor="yourExpense">Your expense</label>
+      <input type="text" id="yourExpense" />
+      <label htmlFor="friendExpense">X's expense</label>
+      <input disabled type="text" id="friendExpense" />
+      <label htmlFor="howBay">How is paying the bill</label>
+      <select>
+        <option value="user">Me</option>
+        <option value="friend">friend name</option>
+      </select>
+
+      <Button>Split bill</Button>
+    </form>
   );
 }
