@@ -125,16 +125,18 @@ form {
 .form-split-bill {
   grid-template-columns: 1fr 12rem;
   padding: 3.2rem 4rem;
+
 }
 
 label {
   font-weight: 500;
+  font-size: 15px;
 }
 
 label::first-letter {
   display: inline-block;
-  margin-right: 4px;
-  font-size: 1.8rem;
+  margin-right: 1px;
+  font-size: 1.5rem;
 }
 
 input,
