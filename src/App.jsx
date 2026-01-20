@@ -26,7 +26,7 @@ function Button({ children, onClick }) {
     <>
       <button
         onClick={() => {
-          onClick();
+          onClick?.();
         }}
         className="button"
       >
@@ -37,15 +37,21 @@ function Button({ children, onClick }) {
 }
 export default function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
-
+  const [friends, setFriends] = useState(initialFriends);
   function handleShowAddFriend() {
     setShowAddFriend((show) => !show);
+  }
+  function handleAddNewFriend(newFriend) {
+    setFriends((friends) => {
+      return [...friends, newFriend];
+    });
+    setShowAddFriend(false);
   }
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList />
-        {showAddFriend && <FormList />}
+        <FriendsList friends={friends} />
+        {showAddFriend && <FormList onAddFriend={handleAddNewFriend} />}
         <Button onClick={handleShowAddFriend}>Add friend</Button>
       </div>
       <FormSplitBill />
@@ -53,8 +59,7 @@ export default function App() {
   );
 }
 
-function FriendsList() {
-  let friends = initialFriends;
+function FriendsList({ friends }) {
   return (
     <ul>
       {friends.map((friend) => {
@@ -87,14 +92,47 @@ function Friend({ friend }) {
   );
 }
 
-function FormList() {
+function FormList({ onAddFriend }) {
+  const [friend, setFriend] = useState({
+    name: "",
+    image: "https://i.pravatar.cc/",
+  });
+  let randomId = crypto.randomUUID();
+
+  function handleNewFriend(e) {
+    e.preventDefault();
+    if (!friend.name || !friend.image) return;
+    let newFriend = {
+      name: friend.name,
+      image: `${friend.image}?=${randomId}`,
+      id: randomId,
+      balance: 0,
+    };
+    console.log(newFriend);
+    onAddFriend(newFriend);
+    setFriend({ ...friend, name: "", image: "https://i.pravatar.cc/" });
+  }
   return (
     <>
-      <form className="form-add-friend">
+      <form className="form-add-friend" onSubmit={handleNewFriend}>
         <label htmlFor="name">👩🏻‍🤝‍🧑🏽Friend name</label>
-        <input type="text" id="name" />
+        <input
+          type="text"
+          id="name"
+          value={friend.name}
+          onChange={(e) => {
+            setFriend({ ...friend, name: e.target.value });
+          }}
+        />
         <label htmlFor="image">🖼 Image URL</label>
-        <input type="text" id="image" />
+        <input
+          type="text"
+          id="image"
+          value={friend.image}
+          onChange={(e) => {
+            setFriend({ ...friend, image: e.target.value });
+          }}
+        />
         <Button>Add</Button>
       </form>
     </>
