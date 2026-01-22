@@ -40,4 +40,4 @@ This project was a deep dive into advanced React concepts:
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/elnakhlawi/Split-bill](https://github.com/elnakhlawi/Split-bill)
+   git clone [https://github.com/elnakhlawi/-Eat--N-Split](https://github.com/elnakhlawi/-Eat--N-Split.git)
